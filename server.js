@@ -76,7 +76,6 @@ app.get("/products", async (req, res) => {
 
   // create route
   app.post("/products", async (req, res) => {
-    console.log("productpost, req.body", req.body)
     try {
       // create a new product
       res.json(await Products.create(req.body));
