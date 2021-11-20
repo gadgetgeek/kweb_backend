@@ -27,23 +27,25 @@ router.post("/signup", async (req, res) => {
     await bcrypt.genSalt(10)
   )
   
-  if (User.findOne(req.body.username) !== null) {
-    // save the user to our database
-    User.create(req.body)
-      .then((user) => {
-        return true
-      })
+  // save the user to our database
+  User.create(req.body)
+    .then((user) => {
+      // log the user as a test
+      console.log(user)
+      res.json(user)
+    })
+    .catch((error) => {
       // error handling
-      .catch((error) => {
-        res.json({ error })
-      })
-    }})
+      console.log(error)
+      res.json(error)
+    })
+})
 
 // The login Routes (Get => Form, Post => form submit)
 // "/user/login"
-router.get("/login", (req, res) => {
-  // res.render("user/login.liquid")
-})
+// router.get("/login", (req, res) => {
+//   // res.render("user/login.liquid")
+// })
 
 router.post("/login", async (req, res) => {
   // destructure username and password from req.body
@@ -53,15 +55,13 @@ router.post("/login", async (req, res) => {
   User.findOne({ username })
     .then(async (user) => {
       // check if the user exists
+      console.log(user)
       if (user) {
         // compare passwords
         const result = await bcrypt.compare(password, user.password)
         if (result) {
-          // store some data in the session object
-          req.session.username = username
-          req.session.loggedIn = true
-          // redirect to index page
-          res.redirect("/shop")
+          // send user info
+          res.json(user)
         } else {
           // send error of wrong password
           res.json({ error: "password doesn't match" })
