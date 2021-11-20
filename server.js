@@ -9,43 +9,17 @@ const {PORT = 3001, DATABASE_URL} = process.env
 const express = require("express")
 // create the application object
 const app = express()
-// import mongoose
-const mongoose = require("mongoose")
+const path = require('path')
+
 // import middleware
 const cors = require("cors")
 const morgan = require("morgan")
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
 
-
-/////////////////////////////////
-// Database Connection
-////////////////////////////////
-// establish connection
-mongoose.connect(DATABASE_URL, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-})
-
-// Connection Events
-mongoose.connection
-.on("open", () => console.log("You are connected to Mongo"))
-.on("close", () => console.log("You are disconnected from Mongo"))
-.on("error", (error) => console.log(error))
-
-//////////////////////////////
-// Models
-//////////////////////////////
-// the people schema
-const ProductSchema = new mongoose.Schema({
-    name: String,
-    price: String,
-    department: String,
-    aisle: String,
-    image: String,
-    location: String
-}, {timestamps: true})
-
-const Products = mongoose.model("Products", ProductSchema)
-
+// import controllers
+const Auth = require('./controllers/auth')
+// const Shop = require('./controllers/shop')
 
 /////////////////////////////////
 //Middleware
@@ -53,6 +27,12 @@ const Products = mongoose.model("Products", ProductSchema)
 app.use(cors()) // prevent cors errors, opens up access for frontend
 app.use(morgan("dev")) //logging
 app.use(express.json()) // parse json bodies
+app.use(session({
+  secret: process.env.SECRET,
+  store: MongoStore.create({mongoUrl: process.env.DATABASE_URL}),
+  resave: false,
+  saveUninitialized: true
+}))
 
 
 ////////////////////////////////
@@ -62,6 +42,8 @@ app.use(express.json()) // parse json bodies
 app.get("/", (req, res) => {
     res.send("kweb is alive")
 })
+
+app.use('/user', Auth)
 
 // index route
 app.get("/products", async (req, res) => {
