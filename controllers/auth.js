@@ -26,20 +26,18 @@ router.post("/signup", async (req, res) => {
     req.body.password,
     await bcrypt.genSalt(10)
   )
-
-  // save the user to our database
-  User.create(req.body)
-    .then((user) => {
-      // log the user as a test
-      console.log(user)
-      // redirect user to login
-      res.redirect("/user/login")
-    })
-    // error handling
-    .catch((error) => {
-      res.json({ error })
-    })
-})
+  
+  if (User.findOne(req.body.username) !== null) {
+    // save the user to our database
+    User.create(req.body)
+      .then((user) => {
+        return true
+      })
+      // error handling
+      .catch((error) => {
+        res.json({ error })
+      })
+    }})
 
 // The login Routes (Get => Form, Post => form submit)
 // "/user/login"
