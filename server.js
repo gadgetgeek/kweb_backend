@@ -48,51 +48,6 @@ app.use('/user', Auth)
 
 app.use('/shop', Shop)
 
-// index route
-app.get("/products", async (req, res) => {
-  try {
-    // send all products
-    res.json(await Products.find({}));
-  } catch (error) {
-    res.status(400).json({ error });
-  }
-});
-
-
-  // create route
-  app.post("/products", async (req, res) => {
-    try {
-      // create a new product
-      res.json(await Products.create(req.body));
-    } catch (error) {
-      res.status(400).json({ error });
-    } 
-  });
-
-
-  // update  route
-  app.put("/products/:id", async (req, res) => {
-    try {
-        // update a product
-        res.json(await Products.findByIdAndUpdate(req.params.id, req.body, {new: true}));
-      } catch (error) {
-        res.status(400).json({ error });
-      }
-})  
-
-// Destroy Route 
-app.delete("/products/:id", async (req, res) => {
-  try {
-      // delete a products
-      res.json(await Products.findByIdAndRemove(req.params.id));
-    } catch (error) {
-      res.status(400).json({ error });
-    }
-})
-
-  
-
-
 /////////////////////////////////
 // Server Listener
 /////////////////////////////////
