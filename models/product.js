@@ -11,13 +11,18 @@ const mongoose = require("./connection")
 const {Schema, model} = mongoose 
 
 // Make a Product Schema
-const ProductSchema = new Schema({
-    name: String,
-    price: String,
-    department: String,
-    aisle: String,
-    image: String,
-    location: String
+const ProductSchema = new Schema({   
+    productId: String,
+    upc: String,
+    aisleLocations: Array,
+    brand: String,
+    categories: Array,
+    countryOrigin: String,
+    description: String,
+    images: Array,
+    items: Array,
+    itemInformation: Object,
+    temperature: Object
 })
 
 // Make the Product Model

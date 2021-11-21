@@ -19,8 +19,8 @@ const MongoStore = require('connect-mongo')
 
 // import controllers
 const Auth = require('./controllers/auth')
-// const Shop = require('./controllers/shop')
 const Shop = require('./controllers/shop')
+const Seed = require('./controllers/seed')
 
 /////////////////////////////////
 //Middleware
@@ -48,6 +48,7 @@ app.use('/user', Auth)
 
 app.use('/shop', Shop)
 
+app.use('/seed', Seed)
 /////////////////////////////////
 // Server Listener
 /////////////////////////////////
