@@ -16,7 +16,7 @@ router.get("/", auth, async (req, res) => {
 })
 
 // create route
-router.post("/", auth, async (req, res) => {
+router.post("/products", auth, async (req, res) => {
     try {
         const {username} = req.payload
         req.body.username = username
@@ -28,7 +28,7 @@ router.post("/", auth, async (req, res) => {
 })
 
 // update route
-router.put("/:id", auth, async (req, res) => {
+router.put("/products/:id", auth, async (req, res) => {
     try {
         const {username} = req.payload
         req.body.username = username
@@ -41,7 +41,7 @@ router.put("/:id", auth, async (req, res) => {
 })
 
 // delete route
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/products/:id", auth, async (req, res) => {
     try {
         const {id} = req.params;
         res.status(200).json(await Products.findByIdAndRemove(id, req.body))
