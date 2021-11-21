@@ -20,6 +20,7 @@ const MongoStore = require('connect-mongo')
 // import controllers
 const Auth = require('./controllers/auth')
 // const Shop = require('./controllers/shop')
+const Shop = require('./controllers/shop')
 
 /////////////////////////////////
 //Middleware
@@ -44,6 +45,8 @@ app.get("/", (req, res) => {
 })
 
 app.use('/user', Auth)
+
+app.use('/shop', Shop)
 
 // index route
 app.get("/products", async (req, res) => {

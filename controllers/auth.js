@@ -16,10 +16,6 @@ const router = express.Router()
 
 // The Signup Routes (Get => Form, Post => form submit)
 // "/user/signup"
-router.get("/signup", (req, res) => {
-  res.send("user/signup.liquid")
-})
-
 router.post("/signup", async (req, res) => {
   // encrypt password
   req.body.password = await bcrypt.hash(
@@ -43,10 +39,6 @@ router.post("/signup", async (req, res) => {
 
 // The login Routes (Get => Form, Post => form submit)
 // "/user/login"
-// router.get("/login", (req, res) => {
-//   // res.render("user/login.liquid")
-// })
-
 router.post("/login", async (req, res) => {
   // destructure username and password from req.body
   const { username, password } = req.body
@@ -55,12 +47,12 @@ router.post("/login", async (req, res) => {
   User.findOne({ username })
     .then(async (user) => {
       // check if the user exists
-      console.log(user)
       if (user) {
         // compare passwords
         const result = await bcrypt.compare(password, user.password)
         if (result) {
           // send user info
+          console.log(user)
           res.json(user)
         } else {
           // send error of wrong password
@@ -74,15 +66,6 @@ router.post("/login", async (req, res) => {
     // error handling
     .catch((error) => {
       res.json({ error })
-    })
-})
-
-// logout route, get request to /user/logout
-router.get("/logout", (req, res) => {
-    // destroy the session
-    req.session.destroy((err) => {
-        // send user back to main page
-        res.redirect("/")
     })
 })
 
