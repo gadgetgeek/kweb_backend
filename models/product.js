@@ -10,18 +10,25 @@ const mongoose = require("./connection")
 // destructuring Schema and model from mongoose
 const {Schema, model} = mongoose 
 
-// Make a User Schema
-const userSchema = new Schema({
-    username: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
-    cart: Array
+// Make a Product Schema
+const ProductSchema = new Schema({   
+    productId: String,
+    upc: String,
+    aisleLocations: Array,
+    brand: String,
+    categories: Array,
+    countryOrigin: String,
+    description: String,
+    images: Array,
+    items: Array,
+    itemInformation: Object,
+    temperature: Object
 })
 
-// Make the User Model
-const User = model("User", userSchema)
+// Make the Product Model
+const Products = model("Products", ProductSchema)
 
 ///////////////////////////////////
 // EXPORT
 ///////////////////////////////////
-module.exports = User
-
+module.exports = Products

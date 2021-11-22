@@ -1,0 +1,24 @@
+///////////////////////////////////
+// IMPORT
+///////////////////////////////////
+const express = require("express") 
+const Product = require('../models/product')
+const data = require('../models/data')
+
+///////////////////////////////////
+// INITIALIZE ROUTER
+///////////////////////////////////
+const router = express.Router()
+
+///////////////////////////////////
+// ROUTE
+///////////////////////////////////
+router.get('/', async (req, res) => {
+    for (item of data) {await Product.create(item)}
+    res.json(await Product.find({}))
+})
+
+////////////////////////////////
+// export the router
+/////////////////////////////////
+module.exports = router

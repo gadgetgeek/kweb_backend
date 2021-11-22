@@ -1,47 +1,55 @@
-///////////////////////////////////////////////////////////
-// dependicies
-///////////////////////////////////////////////////////////
+//////////////////////////////////
+// Dependencies
+/////////////////////////////////
 // get .env variables
 require("dotenv").config()
+// pull PORT from .env, give it a default of 3000 (object destructuring)
+const {PORT = 3001, DATABASE_URL} = process.env
 // import express
 const express = require("express")
 // create the application object
 const app = express()
-// pull PORT from .env, give it a default of 3000 (object destructuring)
-const {PORT = 3000} = process.env
+const path = require('path')
+
 // import middleware
 const cors = require("cors")
 const morgan = require("morgan")
-// import mongoose
-const mongoose = require("./db/db")
-// add auth router
-const AuthRouter = require("./controllers/user")
-const ProductRouter = require("./controllers/Product")
-const auth = require("./auth")
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
 
-///////////////////////////////////////////////////////////
+// import controllers
+const Auth = require('./controllers/auth')
+const Shop = require('./controllers/shop')
+const Seed = require('./controllers/seed')
+
+/////////////////////////////////
 //Middleware
-///////////////////////////////////////////////////////////
+//////////////////////////////////
+app.use(cors()) // prevent cors errors, opens up access for frontend
+app.use(morgan("dev")) //logging
 app.use(express.json()) // parse json bodies
-app.use(cors());
-app.use(morgan("tiny")) //logging
+app.use(session({
+  secret: process.env.SECRET,
+  store: MongoStore.create({mongoUrl: process.env.DATABASE_URL}),
+  resave: false,
+  saveUninitialized: true
+}))
 
-app.use(express.static("public")) // just incase you need to serve a static html file for documentation wont really be using it 
 
-///////////////////////////////////////////////////////////
+////////////////////////////////
 // Routes
-///////////////////////////////////////////////////////////
-app.get("/", auth, (req, res) => {
-  res.json(req.payload)
+////////////////////////////////
+// create a test route
+app.get("/", (req, res) => {
+    res.send("kweb is alive")
 })
 
-app.use("/auth", AuthRouter)
+app.use('/user', Auth)
 
-app.use("/products", ProductRouter);
+app.use('/shop', Shop)
 
-///////////////////////////////////////////////////////////
+app.use('/seed', Seed)
+/////////////////////////////////
 // Server Listener
-///////////////////////////////////////////////////////////
-app.listen(PORT, () => {
-  console.log(`listening on PORT ${PORT}`)
-})
+/////////////////////////////////
+app.listen(PORT, () => {console.log(`listening on PORT ${PORT}`)})
