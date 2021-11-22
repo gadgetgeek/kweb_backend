@@ -15,7 +15,7 @@ const router = express.Router()
 ///////////////////////////////////
 
 /// getCart
-router.post('/cart', async (req, res) => {
+router.put('/cart', async (req, res) => {
     User.findById(req.body.id)
         .then((user) => {
             console.log(user.cart)
@@ -23,13 +23,19 @@ router.post('/cart', async (req, res) => {
         })
 })
 
-/// updateCart
+/// updateCart functions
 router.put('/cart', async (req, res) => {
     User.findById(req.body.id)
     .then((user) => {
-        user.cart = req.body.newCart
-        User.findByIdAndUpdate(req.body.id, user, {returnDocument: 'after'})
-        .then((user) => {
+        const update = user
+        update.cart = req.body.cart
+        return update
+    }).then((update) => {
+        User.findByIdAndUpdate(
+            req.body.id, 
+            update, 
+            {returnDocument: 'after'}
+        ).then((user) => {
             console.log(user.cart)
             res.json(user.cart)
         })
