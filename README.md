@@ -1,6 +1,6 @@
 # Grocery Store Backend
 
-This is the backend for the Grocery Store App, using MongoDB through Heroku to form the API for the [React frontend.]()
+This is the backend for the Grocery Store App, using MongoDB through Heroku to form the API for the [React frontend.](https://github.com/gadgetgeek/kweb_frontend)
 
 ## Contributors
 - [Brian Anderson](https://github.com/gadgetgeek) (team lead and repo owner)
@@ -19,29 +19,21 @@ This is the backend for the Grocery Store App, using MongoDB through Heroku to f
 
 ## Models
 
-#### User Schema
-- username: String
-- password: String
-- cart: Array
-
 #### Product Schema
-- id: String
 - name: String
-- price: Number
+- price: String
 - department: String
-- aisle: Number
+- aisle: String
+- image: String
 - location: String
 
 ## Route Table
 
 | Route | URL | Description |
 | ----- | --- | ----------- |
-| Home | `/` | Homepage |
-| Login | `/login` | User authentication |
-| Signup | `/signup` | User account creation |
-| Index | `/shop` | GET request, returns all products |
-| Create | `/shop` | POST request, uses request body to add product to user cart |
-| Index | `/cart` | GET request, returns products in user cart |
-| Update | `/cart/:id` | PUT request, updates quantity of product in cart |
-| Destroy | `/cart/:id` | DELETE request, removes specified product from cart |
-| Show | `/shop/:id` | GET request, shows the product specified |
+| Test | `/` | Test route |
+| Index | `/products` | GET request, returns all products |
+| Show | `/products/:id` | GET request, shows the product specified |
+| Create | `/products` | POST request, uses form data to create product |
+| Update | `/products/:id` | PUT request, edits product info |
+| Destroy | `/products/:id` | DELETE request, removes specified product from store |
